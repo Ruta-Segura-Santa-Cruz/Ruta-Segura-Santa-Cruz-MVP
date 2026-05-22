@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+﻿# Ruta Segura Santa Cruz — MVP Geoespacial
 
-## Getting Started
+Plataforma interactiva para conductores urbanos de Santa Cruz de la Sierra. Visualiza baches reales, calcula rutas optimas y estima el consumo de gasolina segun el estado de la via.
 
-First, run the development server:
+## Stack Tecnologico
+
+- Next.js 14 + TypeScript + Tailwind CSS
+- Leaflet + react-leaflet (mapas interactivos)
+- @turf/turf (calculos espaciales)
+- OpenRouteService API (calculo de rutas)
+
+## Instalacion
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Ruta-Segura-Santa-Cruz/Ruta-Segura-Santa-Cruz-MVP.git
+cd Ruta-Segura-Santa-Cruz-MVP
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Crear archivo `.env.local` en la raiz:
+Obtener API Key gratis en: https://openrouteservice.org/
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Levantar servidor local:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Abrir http://localhost:3000
 
-## Learn More
+## Estado del Proyecto por Persona
 
-To learn more about Next.js, take a look at the following resources:
+### Persona 1 - Mapa y Geoespacial - COMPLETADO
+- components/Map.tsx — mapa Leaflet completo con baches, marcadores y polilínea
+- components/MapWrapper.tsx — wrapper SSR-safe para Next.js
+- Carga automatica de potholes.json con colores por severidad
+- Marcadores de Origen (verde) y Destino (rojo) al hacer clic
+- Polilínea de ruta con color reactivo segun nivel de riesgo
+- Leyenda de severidad en esquina inferior derecha
+- fitBounds automatico al calcular ruta
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Persona 2 - UI Components y API Proxy - PENDIENTE
+Archivos a completar:
+- components/RoutePanel.tsx — panel lateral con coordenadas y boton calcular ruta
+- components/RiskIndicator.tsx — badge circular de nivel de riesgo
+- components/LoadingSpinner.tsx — spinner animado SVG
+- app/api/route/route.ts — proxy POST hacia OpenRouteService (oculta la API Key)
+- .env.local — ya creado, agregar tu ORS_API_KEY real
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Persona 3 - Datos y Logica Matematica - PENDIENTE
+Archivos a completar:
+- lib/types.ts — interfaces TypeScript globales
+- lib/constants.ts — parametros de combustible, riesgo y mapa
+- lib/potholes-data.ts — loader del JSON de baches
+- lib/geometry.ts — formula Haversine y calculo de distancias
+- lib/fuel-calculator.ts — estimacion de consumo real en bolivianos
+- lib/risk-analyzer.ts — analisis espacial con buffers Turf.js
+- public/data/potholes.json — IMPORTANTE: reemplazar el archivo vacio con los 796 baches reales
 
-## Deploy on Vercel
+### Persona 4 - Integracion y QA - PENDIENTE
+Archivos a completar:
+- app/layout.tsx — metadatos y estructura base
+- app/globals.css — ya configurado con Leaflet CSS
+- app/page.tsx — orquestador principal de estados y componentes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Estructura de Carpetas: ruta-segura-scz/
+├── app/
+│   ├── page.tsx
+│   ├── layout.tsx
+│   ├── globals.css
+│   └── api/route/route.ts
+├── components/
+│   ├── Map.tsx
+│   ├── MapWrapper.tsx
+│   ├── RoutePanel.tsx
+│   ├── RiskIndicator.tsx
+│   ├── FuelEstimator.tsx
+│   └── LoadingSpinner.tsx
+├── lib/
+│   ├── types.ts
+│   ├── constants.ts
+│   ├── fuel-calculator.ts
+│   ├── risk-analyzer.ts
+│   ├── potholes-data.ts
+│   └── geometry.ts
+└── public/data/
+└── potholes.json
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Reglas de Git
+
+- NO hacer push directo a main
+- Cada persona trabaja en su rama: feature/mapa, feature/ui, feature/data, feature/integracion
+- Pull Request obligatorio con aprobacion del equipo antes de fusionar
+
+## Comandos
+
+| Comando | Uso |
+|---|---|
+| npm run dev | Servidor local puerto 3000 |
+| npm run build | Compilar para produccion |
+| npm run lint | Revisar errores de codigo |
