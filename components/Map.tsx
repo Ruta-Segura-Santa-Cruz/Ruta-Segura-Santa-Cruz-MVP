@@ -8,7 +8,7 @@ interface MapProps {
   onMapClick: (latlng: { lat: number; lng: number }) => void;
   origin: { lat: number; lng: number } | null;
   destination: { lat: number; lng: number } | null;
-  route: any;
+  route: import('@/lib/types').RouteGeoJSON | null;
   riskLevel: 'Bajo' | 'Medio' | 'Alto' | 'Muy Alto';
   isLoading: boolean;
 }
